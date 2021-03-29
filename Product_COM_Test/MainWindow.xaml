@@ -7,28 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ComboBox x:Name="comboBoxPorts" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="120" Height="24" SelectionChanged="comboBoxPorts_SelectionChanged" FontSize="11">
-            <ComboBoxItem>COM0</ComboBoxItem>
-            <ComboBoxItem>COM1</ComboBoxItem>
-            <ComboBoxItem>COM2</ComboBoxItem>
-            <ComboBoxItem>COM3</ComboBoxItem>
-            <ComboBoxItem>COM4</ComboBoxItem>
-            <ComboBoxItem>COM5</ComboBoxItem>
-            <ComboBoxItem>COM6</ComboBoxItem>
-            <ComboBoxItem>COM7</ComboBoxItem>
-            <ComboBoxItem>COM8</ComboBoxItem>
-            <ComboBoxItem>COM9</ComboBoxItem>
-            <ComboBoxItem>COM10</ComboBoxItem>
-            <ComboBoxItem>COM11</ComboBoxItem>
-            <ComboBoxItem>COM12</ComboBoxItem>
-            <ComboBoxItem>COM13</ComboBoxItem>
-            <ComboBoxItem>COM14</ComboBoxItem>
-            <ComboBoxItem>COM15</ComboBoxItem>
-        </ComboBox>
+        <ComboBox x:Name="comboBoxPorts" HorizontalAlignment="Left" Margin="18,41,0,0" VerticalAlignment="Top" Width="450" Height="24" SelectionChanged="comboBoxPorts_SelectionChanged" FontSize="11"/>
         <Label x:Name="label" Content="VirtualCOM Port:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label1" Content="Choose a COM port.&#xD;&#xA;" HorizontalAlignment="Left" Margin="249,41,0,0" VerticalAlignment="Top" Height="24" FontSize="11"/>
-        <Button x:Name="buttonOpenPort" Content="Open" HorizontalAlignment="Left" Margin="135,41,0,0" VerticalAlignment="Top" Width="52" Height="24" Click="buttonOpenPort_Click" FontSize="11"/>
-        <Button x:Name="buttonClosePort" Content="Close" HorizontalAlignment="Left" Margin="192,41,0,0" VerticalAlignment="Top" Width="52" FontSize="11" Height="24" IsEnabled="False" Click="buttonClosePort_Click"/>
+        <Label x:Name="label1" Content="Choose a COM port.&#xD;&#xA;" HorizontalAlignment="Left" Margin="669,41,0,0" VerticalAlignment="Top" Height="24" FontSize="11"/>
+        <Button x:Name="buttonOpenPort" Content="Open" HorizontalAlignment="Left" Margin="474,41,0,0" VerticalAlignment="Top" Width="52" Height="24" Click="buttonOpenPort_Click" FontSize="11"/>
+        <Button x:Name="buttonClosePort" Content="Close" HorizontalAlignment="Left" Margin="531,41,0,0" VerticalAlignment="Top" Width="52" FontSize="11" Height="24" IsEnabled="False" Click="buttonClosePort_Click"/>
+        <Button x:Name="buttonListPorts" Content="List Connected" HorizontalAlignment="Left" Margin="589,41,0,0" VerticalAlignment="Top" Width="80" Height="24" FontSize="11" Click="buttonListPorts_Click"/>
         <Button x:Name="buttonGetSerial" Content="Get Serial Number" HorizontalAlignment="Left" Margin="18,79,0,0" VerticalAlignment="Top" Width="112" Height="25" FontSize="11" Click="buttonGetSerial_Click"/>
         <Label x:Name="labelSerialNumber" Content="" HorizontalAlignment="Left" Margin="135,79,0,0" VerticalAlignment="Top" Height="25" FontSize="11" Width="263"/>
         <Button x:Name="buttonGetFSVersion" Content="Get Files Version" HorizontalAlignment="Left" Margin="18,118,0,0" VerticalAlignment="Top" Width="112" Click="buttonGetFilesVersion_Click" Height="25" FontSize="11"/>
@@ -49,5 +33,10 @@
         <Button x:Name="button" Content="-" HorizontalAlignment="Left" Margin="167,210,0,0" VerticalAlignment="Top" Width="25" FontSize="11" Height="25" Background="White" Click="button_Click"/>
         <Label x:Name="labelB469" Content="" HorizontalAlignment="Left" Margin="288,370,0,0" VerticalAlignment="Top" Height="39" Width="110"/>
         <Label x:Name="labelSetVersion" Content="" HorizontalAlignment="Left" Margin="249,157,0,0" VerticalAlignment="Top" Height="25" Width="149" FontSize="11"/>
+        <TextBlock HorizontalAlignment="Left" Margin="589,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="165" Width="181">
+            The "List Connected" button lists all connected COM ports, regardless of what the device is.<LineBreak/><LineBreak/>
+            In a real application, you should restrict the VID and PID to that of your device. <LineBreak/><LineBreak/>
+            See buttonListPorts_Click() for details.
+        </TextBlock>
     </Grid>
 </Window>
