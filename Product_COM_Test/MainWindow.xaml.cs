@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.IO.Ports;
@@ -60,6 +61,7 @@ namespace Product_COM_Test
             0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
             0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 
+        static bool comPortsListed;
 
         private enum ProductCOMEvents
         {
@@ -77,13 +79,20 @@ namespace Product_COM_Test
         {
             InitializeComponent();
             disableFields();
+            SetComPortComboBoxDefaults();
         }
 
         private void comboBoxPorts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string port = comboBoxPorts.SelectedIndex.ToString();
-            port = "COM" + port;
-            _serialPort.PortName = port;
+            // Since we loaded the combobox with ComPortProperties earlier, we need to cast from object to ComPortProperties
+            // to get the correct value out. The SelectedItem can be null if there are no entries in the combobox
+            ComPortProperties properties = (ComPortProperties) comboBoxPorts.SelectedItem;
+            if(properties == null)
+            {
+                return;
+            }
+
+            _serialPort.PortName = properties.ComPortName;
             _serialPort.BaudRate = 115200;
             _serialPort.Parity = Parity.None;
             _serialPort.DataBits = 8;
@@ -504,6 +513,65 @@ namespace Product_COM_Test
             if (activity > 1)
                 --activity;
             textBoxActivity.Text = (activity).ToString();
+        }
+
+        private void buttonListPorts_Click(object sender, RoutedEventArgs e)
+        {
+            if(comPortsListed)
+            {
+                SetComPortComboBoxDefaults();
+                buttonListPorts.Content = "List Connected";
+                comPortsListed = false;
+            }
+            else
+            {
+                SetComPortComboBoxListConnected();
+                buttonListPorts.Content = "Manual";
+                comPortsListed = true;
+            }
+        }
+
+        private void SetComPortComboBoxListConnected()
+        {
+            comboBoxPorts.Items.Clear();
+
+            // Get all connected com ports, regardless of their VID/PID
+            // TODO: In your application, you should specify a VID/PID like in the comment below
+            // List<ComPortProperties> comPortProperties = ComPortManager.GetPortProperties(VID: "0403", PID: "6001");
+            List<ComPortProperties> comPortProperties = ComPortManager.GetPortProperties();
+
+            if (comPortProperties.Count == 0)
+            {
+                MessageBox.Show("No com ports were found");
+            }
+            else
+            {
+                foreach (ComPortProperties portProperties in comPortProperties)
+                {
+                    comboBoxPorts.Items.Add(portProperties);
+                }
+
+                // This prevents the combobox selecting 'nothing' after repopulating it
+                comboBoxPorts.SelectedIndex = 0;
+            }
+        }
+
+        // This loads the combo box with ComPortProperties objects so we can have it display a 'friendly name'
+        // instead of just 'COM1', and also get the actual com port name after the user has selected it
+        private void SetComPortComboBoxDefaults()
+        {
+            comboBoxPorts.Items.Clear();
+            for (int i = 1; i <= 15; i++)
+            {
+                string name = $"COM{i}";
+                comboBoxPorts.Items.Add(new ComPortProperties(
+                    ComPortName: name,
+                    VID: "",
+                    PID: "",
+                    FriendlyName: ""
+                ));
+            }
+            comboBoxPorts.SelectedIndex = 0;
         }
     }
 }
